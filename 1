@@ -1,0 +1,23 @@
+server {
+    listen  172.16.189.28:80;
+
+    server_name search-tech;
+
+    location / {
+
+        #root/sites/Flask-FullTextSearch/angularjs-frontend/;
+         root /sites/Flask-Angularjs-JSON-Auth/angularjs-frontend/;
+             
+        
+        }
+    location ~ ^/(users|sites|api)/ {
+
+
+        uwsgi_pass 127.0.0.1:8067;
+        include uwsgi_params;
+
+    }
+
+
+}
+
