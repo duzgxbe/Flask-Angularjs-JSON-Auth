@@ -31,7 +31,7 @@ def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, SECRET_KEY)
 
-
+#Login decorator function
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -83,18 +83,15 @@ class Auth(Resource):
 
 api.add_resource(Auth, '/login') 
 
-def no_auth():
-    response = make_response(jsonify({"error":"Unauthorised"}))
-    response.status_code = 401
-    return response
-    
-    
+   
+#Adding the login decorator to the Resource class   
 class Resource(flask_restful.Resource):
     method_decorators = [login_required]    
     
+    
+#Any API class now inheriting the Resource class will need Authentication    
 class User(Resource):
-    def get(self):
-        
+    def get(self):        
               
                 results = Users.query.all()
                 users = schema.dump(results, many=True).data
