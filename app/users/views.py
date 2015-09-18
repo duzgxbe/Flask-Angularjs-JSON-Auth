@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request,flash, redirect, url_for, jsonify, make_response
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, make_response
 from app.users.models import Users, UsersSchema
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_restful import Resource, Api
@@ -12,7 +12,7 @@ from flask import g
 
 
 users = Blueprint('users', __name__)
-#http://marshmallow.readthedocs.org/en/latest/quickstart.html#declaring-schemas
+# http://marshmallow.readthedocs.org/en/latest/quickstart.html#declaring-schemas
 schema = UsersSchema()
 
 
@@ -21,17 +21,19 @@ def create_token(user):
     payload = {
         'sub': user.id,
         'iat': datetime.utcnow(),
-        'exp': datetime.utcnow() + timedelta(days=14)
+        'exp': datetime.utcnow() + timedelta(days=1)
     }
-    token = jwt.encode(payload, SECRET_KEY)
+    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
     return token.decode('unicode_escape')
 
 
 def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
-    return jwt.decode(token, SECRET_KEY)
+    return jwt.decode(token, SECRET_KEY, algorithm='HS256')
 
-#Login decorator function
+# Login decorator function
+
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -61,46 +63,46 @@ def login_required(f):
 
 api = Api(users)
 
+
 class Auth(Resource):
+
     def post(self):
-        data=request.get_json(force=True)
+        data = request.get_json(force=True)
         print(data)
-        email=data['email']
-        password=data['password']
-        user=Users.query.filter_by(email=email).first()
+        email = data['email']
+        password = data['password']
+        user = Users.query.filter_by(email=email).first()
         if user == None:
-           response = make_response(jsonify({"message":"invalid username/password"}))
-           response.status_code = 401
-           return response
-        if check_password_hash(user.password,password):
-               
-                 token = create_token(user)
-                 return {'token': token}
+            response = make_response(
+                jsonify({"message": "invalid username/password"}))
+            response.status_code = 401
+            return response
+        if check_password_hash(user.password, password):
+
+            token = create_token(user)
+            return {'token': token}
         else:
-             response = make_response(jsonify({"message":"invalid username/password"}))
-             response.status_code = 401
-             return response
+            response = make_response(
+                jsonify({"message": "invalid username/password"}))
+            response.status_code = 401
+            return response
 
-api.add_resource(Auth, '/login') 
+api.add_resource(Auth, '/login')
 
-   
-#Adding the login decorator to the Resource class   
+
+# Adding the login decorator to the Resource class
 class Resource(flask_restful.Resource):
-    method_decorators = [login_required]    
-    
-    
-#Any API class now inheriting the Resource class will need Authentication    
+    method_decorators = [login_required]
+
+
+# Any API class now inheriting the Resource class will need Authentication
 class User(Resource):
-    def get(self):        
-              
-                results = Users.query.all()
-                users = schema.dump(results, many=True).data
-                return jsonify({"users":users})
-            
-        
-api.add_resource(User, '/users')              
+
+    def get(self):
+
+        results = Users.query.all()
+        users = schema.dump(results, many=True).data
+        return jsonify({"users": users})
 
 
-             
-   
-   
+api.add_resource(User, '/users')

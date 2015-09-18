@@ -6,34 +6,34 @@ db = SQLAlchemy()
 
 # Relationships
 
+
 class Users(db.Model):
-  id = db.Column(db.Integer, primary_key=True)
-  email = db.Column(db.String(250), unique=True, nullable=False)
-  name = db.Column(db.String(250), nullable=False)
-  password = db.Column(db.String(250), nullable=False)
-  is_enabled = db.Column(db.Boolean(), nullable=False, server_default='False')
-  
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(250), unique=True, nullable=False)
+    name = db.Column(db.String(250), nullable=False)
+    password = db.Column(db.String(250), nullable=False)
+    is_enabled = db.Column(db.Boolean(), nullable=False,
+                           server_default='False')
 
+    def __init__(self, email, name, password, is_enabled):
+        self.email = email
+        self.name = name
+        self.password = password
+        self.is_enabled = is_enabled
 
-  def __init__(self,email, name, password, is_enabled):
-    self.email=email
-    self.name=name
-    self.password = password
-    self.is_enabled = is_enabled
+    def add(self, user):
+        db.session.add(user)
+        return session_commit()
 
-  def add(self,user):
-     db.session.add(user)
-     return session_commit ()
+    def update(self):
+        return session_commit()
 
-  def update(self):
-      return session_commit()
+    def delete(self, user):
+        db.session.delete(user)
+        return session_commit()
 
-  def delete(self,user):
-     db.session.delete(user)
-     return session_commit()
-
-  def is_active(self):
-      return self.is_enabled
+    def is_active(self):
+        return self.is_enabled
 
 
 class UsersSchema(Schema):
@@ -41,21 +41,19 @@ class UsersSchema(Schema):
     not_blank = validate.Length(min=1, error='Field cannot be blank')
     name = fields.String(validate=not_blank)
     email = fields.Email()
-    #Need to make this field not blank on add
+    # Need to make this field not blank on add
     password = fields.String()
     is_active = fields.Boolean(validate=not_blank)
     role = fields.String()
 
     class Meta:
-       fields = ('id', 'email', 'name', 'is_enabled')
+        fields = ('id', 'email', 'name', 'is_enabled')
 
 
-
-
-def  session_commit ():
-      try:
+def session_commit():
+    try:
         db.session.commit()
-      except SQLAlchemyError as e:
-         db.session.rollback()
-         reason=str(e)
-         return reason
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        reason = str(e)
+        return reason
