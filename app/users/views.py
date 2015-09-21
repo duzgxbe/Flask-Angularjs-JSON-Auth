@@ -29,7 +29,7 @@ def create_token(user):
 
 def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
-    return jwt.decode(token, SECRET_KEY, algorithm='HS256')
+    return jwt.decode(token, SECRET_KEY, algorithms='HS256')
 
 # Login decorator function
 
