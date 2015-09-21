@@ -28,7 +28,7 @@ Installation
                      }
     }
     
-      
+    service nginx start  
 
 
 For explanation see http://techarena51.com/index.php/json-web-token-authentication-with-flask-and-angularjs/
