@@ -1,0 +1,16 @@
+let b64 = "";
+let file_size = 0;
+let b64_size = 0;
+
+myReader.onloadend = (e) => {
+  b64 = myReader.result;
+  // console.log(b64);
+  if (this.fileInp) this.fileInp.nativeElement.value = "";
+  // limit file size
+  file_size = file.size || 0;
+  b64_size = b64.length || 0;
+  if (file_size > 5*this.MB || b64_size > 9*this.MB) {
+    return
+  }
+  // post file...
+}
