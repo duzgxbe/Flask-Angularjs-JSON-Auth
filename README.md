@@ -40,5 +40,7 @@ Installation
 For explanation see http://techarena51.com/index.php/json-web-token-authentication-with-flask-and-angularjs/
 
 # Asset
-- IBM maximo demo: https://www.ibm.com/support/pages/maximo-asset-management-760-preview-site
+- IBM maximo demo: 
+ + https://www.ibm.com/support/pages/maximo-asset-management-760-preview-site
+ + https://myibm.ibm.com/dashboard/ -> try Trail in Firefox (Chrome seem not work???)
 - Qualys: https://qualysguard.qg3.apps.qualys.com/
