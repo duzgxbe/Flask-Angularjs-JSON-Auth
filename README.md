@@ -38,3 +38,7 @@ Installation
 
 
 For explanation see http://techarena51.com/index.php/json-web-token-authentication-with-flask-and-angularjs/
+
+# Asset
+- IBM maximo demo: https://www.ibm.com/support/pages/maximo-asset-management-760-preview-site
+- Qualys: https://qualysguard.qg3.apps.qualys.com/
