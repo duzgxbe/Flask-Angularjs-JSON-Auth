@@ -44,3 +44,47 @@ For explanation see http://techarena51.com/index.php/json-web-token-authenticati
  + https://www.ibm.com/support/pages/maximo-asset-management-760-preview-site
  + https://myibm.ibm.com/dashboard/ -> try Trail in Firefox (Chrome seem not work???)
 - Qualys: https://qualysguard.qg3.apps.qualys.com/
+
+
+
+
+User
+
+_id
+username
+email
+fullname
+group_id
+
+
+Role
+
+
+_id
+name
+
+
+
+Permission
+		
+
+_id
+name
+
+
+
+user_role
+
+
+user_id
+role_id
+
+
+
+role_permission
+
+
+role_id
+permission_id
+
+
